@@ -17,9 +17,17 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/admin-test', function () {
-    return 'ADMIN OK';
-})->middleware(['auth', 'is_admin']);
+Route::get('/profiles/{user}', [ProfileController::class, 'show'])
+    ->name('profiles.show');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])
+        ->name('profiles.edit');
+
+    Route::patch('/profile/edit', [ProfileController::class, 'update'])
+        ->name('profiles.update');
+});
+
 
 
 require __DIR__.'/auth.php';
