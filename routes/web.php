@@ -1,41 +1,76 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FaqController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\FaqCategoryController;
+use App\Http\Controllers\Admin\FaqController as AdminFaqController;
+
+/*
+|--------------------------------------------------------------------------
+| Public routes
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
+// Public profiles
 Route::get('/profiles/{user}', [ProfileController::class, 'show'])
     ->name('profiles.show');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])
-        ->name('profiles.edit');
+// Public news
+Route::resource('news', NewsController::class)
+    ->only(['index', 'show']);
 
-    Route::patch('/profile/edit', [ProfileController::class, 'update'])
-        ->name('profiles.update');
+// public faq
+Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');
+
+/*
+|--------------------------------------------------------------------------
+| Authenticated user routes
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware('auth')->group(function () {
+
+    // Profile edit (ONLY ONE VERSION)
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])
+        ->name('profile.edit');
+
+    Route::patch('/profile', [ProfileController::class, 'update'])
+        ->name('profile.update');
 });
 
-/* admin routes */
+/*
+|--------------------------------------------------------------------------
+| Admin routes
+|--------------------------------------------------------------------------
+*/
+
 Route::middleware(['auth', 'is_admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
+
+        // Admin users
         Route::resource('users', UserController::class);
+
+        // Admin news
+        Route::resource('news', NewsController::class)
+            ->except(['index', 'show']);
+
+        // Admin faq and faq category
+        Route::resource('faq-categories', FaqCategoryController::class);
+        Route::resource('faqs', AdminFaqController::class)
+            ->except(['index', 'show']);
     });
 
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 require __DIR__.'/auth.php';
