@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -28,6 +29,13 @@ Route::middleware('auth')->group(function () {
         ->name('profiles.update');
 });
 
+/* admin routes */
+Route::middleware(['auth', 'is_admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::resource('users', UserController::class);
+    });
 
 
 require __DIR__.'/auth.php';
