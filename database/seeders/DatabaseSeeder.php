@@ -2,27 +2,51 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\User;
+use App\Models\News;
+use App\Models\FaqCategory;
+use App\Models\Faq;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // Admin user (VERPLICHT)
+        $admin = User::create([
+            'name' => 'admin',
+            'email' => 'admin@ehb.be',
+            'password' => Hash::make('Password!321'),
+            'is_admin' => true,
         ]);
 
-        $this->call(AdminSeeder::class);
+        // Normale user
+        User::create([
+            'name' => 'user',
+            'email' => 'user@test.be',
+            'password' => Hash::make('password'),
+            'is_admin' => false,
+        ]);
 
+        // News item
+        $news = News::create([
+            'title' => 'Welcome to the website',
+            'content' => 'This is the first news item created by the seeder.',
+            'published_at' => now(),
+        ]);
+
+        // FAQ category
+        $category = FaqCategory::create([
+            'name' => 'General',
+        ]);
+
+        // FAQ question
+        Faq::create([
+            'faq_category_id' => $category->id,
+            'question' => 'How do I create an account?',
+            'answer' => 'You can register using the register page.',
+        ]);
     }
 }
+
