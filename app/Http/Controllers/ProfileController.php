@@ -30,7 +30,7 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         $data = $request->validate([
-            'username' => 'nullable|string|max:255',
+            'username' => 'nullable|string|max:255|unique:users,username,' . auth()->id(),
             'birthday' => 'nullable|date',
             'about' => 'nullable|string',
             'profile_photo' => 'nullable|image|max:2048',

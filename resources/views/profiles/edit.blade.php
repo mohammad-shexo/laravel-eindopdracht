@@ -23,6 +23,10 @@
                            name="username"
                            value="{{ old('username', $user->username) }}"
                            class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200">
+                    @error('username')
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+
                 </div>
 
                 {{-- Birthday --}}
