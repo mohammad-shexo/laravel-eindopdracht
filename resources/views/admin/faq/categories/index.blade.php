@@ -1,25 +1,55 @@
 <x-app-layout>
-    <h1>FAQ Categories</h1>
+    <div class="max-w-5xl mx-auto px-4 py-8">
 
-    <a href="{{ route('admin.faq-categories.create') }}">➕ Add category</a>
+        {{-- Header --}}
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-2xl font-bold">
+                FAQ Categories
+            </h1>
 
-    <ul>
-        @foreach($categories as $category)
-            <li>
-                {{ $category->name }}
+            <a href="{{ route('admin.faq-categories.create') }}"
+               class="px-4 py-2 bg-blue-600 text-black rounded hover:bg-blue-700">
+                ➕ Add category
+            </a>
+        </div>
 
-                <a href="{{ route('admin.faq-categories.edit', $category) }}">Edit</a>
+        {{-- List --}}
+        <div class="bg-white border rounded shadow-sm divide-y">
+            @foreach($categories as $category)
+                <div class="flex items-center justify-between p-4">
 
-                <form method="POST"
-                      action="{{ route('admin.faq-categories.destroy', $category) }}"
-                      style="display:inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit">Delete</button>
-                </form>
+                    <div class="font-medium">
+                        {{ $category->name }}
+                    </div>
 
-                <a href="{{ route('admin.faqs.create') }}">➕ Add question</a>
-            </li>
-        @endforeach
-    </ul>
+                    <div class="flex items-center gap-4 text-sm">
+
+                        <a href="{{ route('admin.faqs.create') }}"
+                           class="text-green-600 hover:underline">
+                            ➕ Add question
+                        </a>
+
+                        <a href="{{ route('admin.faq-categories.edit', $category) }}"
+                           class="text-blue-600 hover:underline">
+                            Edit
+                        </a>
+
+                        <form method="POST"
+                              action="{{ route('admin.faq-categories.destroy', $category) }}"
+                              onsubmit="return confirm('Delete this category?');">
+                            @csrf
+                            @method('DELETE')
+
+                            <button type="submit"
+                                    class="text-red-600 hover:underline">
+                                Delete
+                            </button>
+                        </form>
+
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
+    </div>
 </x-app-layout>
