@@ -1,4 +1,5 @@
 <x-app-layout>
+    {{-- UPDATE FORM --}}
     <form method="POST"
           enctype="multipart/form-data"
           action="{{ route('admin.news.update', $news) }}">
@@ -17,23 +18,22 @@
                value="{{ old('published_at', $news->published_at->format('Y-m-d')) }}"
                required>
 
-
         <input type="file" name="image">
 
-        <button>Save</button>
+        <button type="submit">Save</button>
+    </form>
 
-        <hr class="my-6">
+    <hr class="my-6">
 
-        <form method="POST"
-              action="{{ route('admin.news.destroy', $news) }}"
-              onsubmit="return confirm('Are you sure you want to delete this news item?');">
-            @csrf
-            @method('DELETE')
+    {{-- DELETE FORM (APART!) --}}
+    <form method="POST"
+          action="{{ route('admin.news.destroy', $news) }}"
+          onsubmit="return confirm('Are you sure you want to delete this news item?');">
+        @csrf
+        @method('DELETE')
 
-            <button type="submit" style="color: red;">
-                Delete news item
-            </button>
-        </form>
-
+        <button type="submit" style="color: red;">
+            Delete news item
+        </button>
     </form>
 </x-app-layout>
