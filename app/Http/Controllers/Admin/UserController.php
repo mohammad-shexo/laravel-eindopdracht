@@ -59,6 +59,7 @@ class UserController extends Controller
             ->with('success', 'User updated');
     }
 
+
     public function destroy(User $user)
     {
         $user->delete();
