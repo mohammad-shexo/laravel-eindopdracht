@@ -14,8 +14,9 @@
 
         <input type="date"
                name="published_at"
-               value="{{ old('published_at', $news->published_at) }}"
+               value="{{ old('published_at', $news->published_at->format('Y-m-d')) }}"
                required>
+
 
         <input type="file" name="image">
 
