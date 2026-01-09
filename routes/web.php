@@ -17,7 +17,8 @@ use App\Http\Controllers\Admin\FaqController as AdminFaqController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
+
 
 // Public profiles
 Route::get('/profiles/{user}', [ProfileController::class, 'show'])

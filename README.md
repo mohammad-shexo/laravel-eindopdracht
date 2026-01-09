@@ -32,9 +32,9 @@ De applicatie is bereikbaar via een `.test` domein.
 Voor evaluatie kan `php artisan serve` gebruikt worden.
 
 ## Admin account 
-Username: admin
-Email: admin@ehb.be
-Password: Password!321
+- Username: admin
+- Email: admin@ehb.be
+- Password: Password!321
 
 ## Functionaliteiten
 - Authenticatie (login, register, password reset)
